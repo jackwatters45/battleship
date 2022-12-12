@@ -35,7 +35,7 @@ describe('ship methods', () => {
     expect(testBattleship.isSunk()).toBe(false);
   });
 
-  it('ship is invalid length');
+  it.todo('ship is invalid length');
 
-  it('ship is hit more than its length');
+  it.todo('ship is hit more than its length');
 });

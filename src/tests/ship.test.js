@@ -25,14 +25,14 @@ describe('ship methods', () => {
     testBattleship.hit();
     testBattleship.hit();
     testBattleship.hit();
-    expect(testBattleship.isSunk()).toBe(true);
+    expect(testBattleship.sunk).toBe(true);
   });
 
   it('check if ship is sunk (false)', () => {
     testBattleship.hit();
     testBattleship.hit();
     testBattleship.hit();
-    expect(testBattleship.isSunk()).toBe(false);
+    expect(testBattleship.sunk).toBe(false);
   });
 
   it.todo('ship is invalid length');

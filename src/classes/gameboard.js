@@ -40,6 +40,7 @@ export default class Gameboard {
     return ship;
   }
 
+  // TODO clean up these check methods
   // checks if coordinates are all on the board and not already taken
   checkValidCoordinate(coordinates) {
     if (Array.isArray(coordinates)) {
@@ -90,9 +91,9 @@ export default class Gameboard {
   }
 
   #allShipsSunk() {
-    for (const ship of this.ships) {
-      if (ship.sunk === false) return false;
-    }
+    this.ships.forEach((ship) => {
+      if (!ship.sunk) return false;
+    });
     return true;
   }
 }

@@ -5,8 +5,8 @@ describe('ship methods', () => {
   let testBattleship;
 
   beforeEach(() => {
-    testCarrier = new Ship(5);
-    testBattleship = new Ship(4);
+    testCarrier = new Ship(['A1', 'A2', 'A3', 'A4', 'A5'], 'Carrier');
+    testBattleship = new Ship(['B1', 'C1', 'D1', 'E1'], 'Battleship');
   });
 
   it('ship is hit once', () => {

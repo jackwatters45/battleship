@@ -7,8 +7,8 @@ describe('tests for gameboard', () => {
 
   beforeEach(() => {
     gameboard = new Gameboard();
-    ship1 = gameboard.placeShip(['A1', 'B1', 'C1']);
-    ship2 = gameboard.placeShip(['A2', 'B2', 'C2']);
+    ship1 = gameboard.placeShip('A1', false, 3);
+    ship2 = gameboard.placeShip('A2', false, 3);
 
     gameboard.receiveAttack('A2');
     gameboard.receiveAttack('B2');
@@ -20,7 +20,7 @@ describe('tests for gameboard', () => {
   });
 
   it('coordinates have attacked and ship placed properties set to false', () => {
-    expect(gameboard.board['A4']).toEqual({
+    expect(gameboard.board['A4']).toStrictEqual({
       shipPlaced: false,
       attacked: false,
     });
@@ -44,13 +44,13 @@ describe('tests for gameboard', () => {
   });
 
   it('account for out of bounds', () => {
-    expect(() => gameboard.placeShip(['E2', 'F2', 'Z2'])).toThrow(
+    expect(() => gameboard.placeShip('Z2', true, 4)).toThrow(
       'Invalid Coordinate'
     );
   });
 
   it('try to place ship where one already exists', () => {
-    expect(() => gameboard.placeShip(['A1', 'B1'])).toThrow(
+    expect(() => gameboard.placeShip('A1', false, 2)).toThrow(
       'Already a ship there Captain'
     );
   });
@@ -81,4 +81,8 @@ describe('tests for gameboard', () => {
     gameboard.receiveAttack('A1');
     expect(gameboard.receiveAttack('C1')).toBeUndefined();
   });
+
+  it('place random ships', () => {
+    expect(() => gameboard.placeRandShips()).not.toThrow()
+  })
 });

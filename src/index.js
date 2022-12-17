@@ -31,19 +31,5 @@ const gameLoop = () => {
   //
 };
 
+// click new game button =>
 gameLoop();
-
-// TODO ui for attacking
-
-// TODO ui for placing ships
-
-function generateCoordinates() {
-  // random row
-  const rowLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-  const rowNum = Math.floor(Math.random() * 10);
-  const row = rowLetters[rowNum];
-  // random column
-  const column = Math.floor(Math.random() * 10 + 1);
-  // return concatenated coordinate
-  return `${row}${column}`;
-}

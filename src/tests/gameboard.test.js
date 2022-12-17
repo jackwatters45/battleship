@@ -7,8 +7,8 @@ describe('tests for gameboard', () => {
 
   beforeEach(() => {
     gameboard = new Gameboard();
-    ship1 = gameboard.placeShip('A1', false, 3);
-    ship2 = gameboard.placeShip('A2', false, 3);
+    ship1 = gameboard.placeShip(['A1', 'B1', 'C1', 'D1'], 'Battleship');
+    ship2 = gameboard.placeShip(['A2', 'B2', 'C2'], 'Cruiser');
 
     gameboard.receiveAttack('A2');
     gameboard.receiveAttack('B2');
@@ -26,32 +26,24 @@ describe('tests for gameboard', () => {
     });
   });
 
-  it('placeship creates new ship', () => {
-    expect(ship1).toEqual({
-      coordinates: ['A1', 'B1', 'C1'],
+  it('new ship is added to the board', () => {
+    expect(ship1).toMatchObject({
+      coordinates: ['A1', 'B1', 'C1', 'D1'],
       hits: 0,
-      length: 3,
+      length: 4,
       sunk: false,
     });
   });
 
-  it('new ship is added to the board', () => {
-    expect(gameboard.board['A1'].shipPlaced).toMatchObject({
-      coordinates: ['A1', 'B1', 'C1'],
-      hits: 0,
-      length: 3,
-    });
-  });
-
   it('account for out of bounds', () => {
-    expect(() => gameboard.placeShip('Z2', true, 4)).toThrow(
-      'Invalid Coordinate'
+    expect(() => gameboard.placeShip(['Z2', 'C6'])).toThrow(
+      'Invalid Placement'
     );
   });
 
   it('try to place ship where one already exists', () => {
-    expect(() => gameboard.placeShip('A1', false, 2)).toThrow(
-      'Already a ship there Captain'
+    expect(() => gameboard.placeShip(['A1', 'A2'])).toThrow(
+      'Invalid Placement'
     );
   });
 
@@ -73,6 +65,7 @@ describe('tests for gameboard', () => {
     gameboard.receiveAttack('C2');
     gameboard.receiveAttack('A1');
     gameboard.receiveAttack('B1');
+    gameboard.receiveAttack('D1');
     expect(gameboard.receiveAttack('C1')).toBe(true);
   });
 
@@ -83,6 +76,6 @@ describe('tests for gameboard', () => {
   });
 
   it('place random ships', () => {
-    expect(() => gameboard.placeRandShips()).not.toThrow()
-  })
+    expect(() => gameboard.placeRandShips()).not.toThrow();
+  });
 });

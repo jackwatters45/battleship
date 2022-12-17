@@ -1,6 +1,6 @@
 import { Player, Computer } from '../classes/player';
 
-describe('player abd computer class', () => {
+describe('player and computer class', () => {
   let player;
   let computer;
 
@@ -9,7 +9,7 @@ describe('player abd computer class', () => {
     computer = new Computer();
     player.setOpponentGameboard(computer.gameBoard);
     computer.setOpponentGameboard(player.gameBoard);
-    computer.gameBoard.placeShip('A1', false, 3);
+    computer.gameBoard.placeShip(['A1', 'B1', 'C1', 'D1'], 'Battleship');
   });
 
   it('all objects exist', () => {
@@ -17,31 +17,31 @@ describe('player abd computer class', () => {
     expect(computer).toBeDefined();
   });
 
-  // it('user wants to play again -> create new gameboard for player', () => {
-  //   const oldGameboard = player.gameBoard;
-  //   player.createNewGameboard();
-  //   expect(oldGameboard).not.toBe(player.gameBoard);
-  // });
+  it('user wants to play again -> create new gameboard for player', () => {
+    const oldGameboard = player.gameBoard;
+    player.createNewGameboard();
+    expect(oldGameboard).not.toBe(player.gameBoard);
+  });
 
-  // it('user wants to play again -> create new gameboard for computer', () => {
-  //   const oldGameboard = computer.gameBoard;
-  //   computer.createNewGameboard();
-  //   expect(oldGameboard).not.toBe(computer.gameBoard);
-  // });
+  it('user wants to play again -> create new gameboard for computer', () => {
+    const oldGameboard = computer.gameBoard;
+    computer.createNewGameboard();
+    expect(oldGameboard).not.toBe(computer.gameBoard);
+  });
 
-  // it('player attacks', () => {
-  //   player.attack('A1', computer.gameBoard);
-  //   expect(computer.gameBoard.board['A1']).toMatchObject({ attacked: true });
-  // });
+  it('player attacks', () => {
+    player.attack('A1', computer.gameBoard);
+    expect(computer.gameBoard.board['A1']).toMatchObject({ attacked: true });
+  });
 
-  // it('computer attacks random location', () => {
-  //   computer.randomAttack();
-  //   expect(computer.moves.length).toEqual(1);
-  // });
+  it('computer attacks random location', () => {
+    computer.randomAttack();
+    expect(computer.moves.length).toEqual(1);
+  });
 
-  // it('computer attacks multiple random location', () => {
-  //   computer.randomAttack();
-  //   computer.randomAttack();
-  //   expect(computer.moves.length).toEqual(2);
-  // });
+  it('computer attacks multiple random location', () => {
+    computer.randomAttack();
+    computer.randomAttack();
+    expect(computer.moves.length).toEqual(2);
+  });
 });

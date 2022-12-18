@@ -7,14 +7,14 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/templates/index.html',
-      title: 'Weather App',
+      title: 'Battleship',
     }),
   ],
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/i,
-        exclude: ['node_modules'],
+        // exclude: ['node_modules'],
         loader: 'babel-loader',
       },
       {

@@ -17,9 +17,9 @@ export class Player {
     this.gameBoard = new Gameboard();
   }
 
-  attack(coordinates) {
-    this.moves.push([coordinates, this.opponentGameboard.board[coordinates]]);
-    return this.opponentGameboard.receiveAttack(coordinates);
+  attack(coordinate) {
+    this.moves.push([coordinate, this.opponentGameboard.board[coordinate]]);
+    return this.opponentGameboard.receiveAttack(coordinate);
   }
 }
 

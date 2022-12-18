@@ -16,15 +16,13 @@ export default class Gameboard {
   placeRandShips() {
     this._shipsToBePlaced.forEach((ship) => {
       let isValidShip = false;
-      let randStart;
-      let randOrientation;
       let coordinates;
 
       while (!isValidShip) {
-        randStart = Object.keys(this.board)[
+        const randStart = Object.keys(this.board)[
           Math.floor(Math.random() * Object.keys(this.board).length)
         ];
-        randOrientation = Math.random() < 0.5;
+        const randOrientation = Math.random() < 0.5;
 
         coordinates = this.#getOtherCoordinates(
           randStart,
@@ -35,22 +33,20 @@ export default class Gameboard {
           isValidShip = true;
         }
       }
-
-      this.placeShip(coordinates, ship.name);
-      this._shipsToBePlaced.shift();
+      this.#placeShip(coordinates, ship.name);
     });
+    this._shipsToBePlaced = null;
+  }
+
+  userPlaceShip(start, orientation, ship) {
+    this.#placeShip(
+      this.#getOtherCoordinates(start, orientation, ship.length),
+      ship.name
+    );
   }
 
   // Gameboards should be able to place ships at specific coordinates
-  placeShip(coordinates, name) {
-    // gets array of coordinates using start orientation and length
-    // TODO
-    // const coordinates = this.#getOtherCoordinates(start, orientation, length);
-    coordinates.forEach((coordinate) => {
-      if (!this.#checkValidCoordinate(coordinate)) throw 'Invalid Placement';
-    });
-    // TODO
-    // if (!coordinates) return;
+  #placeShip(coordinates, name) {
     // create new ship given coordinates
     const ship = new Ship(coordinates, name);
     // add ship to list of ships on gameboard
@@ -67,7 +63,7 @@ export default class Gameboard {
   // sends the ‘hit’ function to the correct ship, or records the coordinates of the missed shot.
   receiveAttack(coordinate) {
     // makes sure valid coordinate
-    this.#checkAlreadyAttacked(coordinate);
+    console.log(this.#isAlreadyAttacked(coordinate));
     // if ship at location it is hit
     if (this.board[coordinate].shipPlaced) {
       // that ship is sunk check for end of game
@@ -96,51 +92,41 @@ export default class Gameboard {
   #getOtherCoordinates(start, isHorizontal, length) {
     const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
     // get row and column from coordinate string
-    let [row, column] = start.split('');
+    let [row, ...columnArr] = start.split('');
     // convert column to int
-    column = parseInt(column);
+    const column = parseInt(
+      columnArr.reduce((numString1, numString2) => numString1 + numString2)
+    );
     // get index of row from letters array
     const rowIndex = letters.indexOf(row);
-    // initalize coordinates as list with start of ship
-    const coordinates = [start];
+    // initalize coordinates list
+    const coordinates = [];
 
     if (isHorizontal)
-      for (let i = column + 1; i < column + length; i++) {
+      for (let i = column; i < column + length; i++) {
         const newCoordinate = `${row}${i}`;
-        if (this.#checkValidCoordinate(newCoordinate))
-          coordinates.push(newCoordinate);
-        else return false;
+        if (!this.#isValidCoordinate(newCoordinate)) return false;
+        coordinates.push(newCoordinate);
       }
     else
-      for (let i = rowIndex + 1; i < rowIndex + length; i++) {
+      for (let i = rowIndex; i < rowIndex + length; i++) {
         const newCoordinate = `${letters[i]}${column}`;
-        if (this.#checkValidCoordinate(newCoordinate))
-          coordinates.push(newCoordinate);
-        else return false;
+        if (!this.#isValidCoordinate(newCoordinate)) return false;
+        coordinates.push(newCoordinate);
       }
     return coordinates;
   }
 
-  // TODO clean up these check methods
   // checks if coordinates are all on the board and not already taken
-  #checkValidCoordinate(coordinate) {
-    if (!Object.keys(this.board).includes(coordinate)) {
-      return false;
-      // throw `${coordinate}: Invalid Coordinate`;
-    }
-    if (!(this.board[coordinate].shipPlaced === false)) {
-      return false;
-      // throw `${coordinate}: Already a ship there Captain`;
-    }
-    return true;
+  #isValidCoordinate(coordinate) {
+    return (
+      Object.keys(this.board).includes(coordinate) &&
+      this.board[coordinate].shipPlaced === false
+    );
   }
 
-  // TODO
-  #checkAlreadyAttacked(coordinates) {
-    if (!Object.keys(this.board).includes(coordinates))
-      throw `${coordinates}: Invalid Coordinate`;
-    if (!(this.board[coordinates].attacked === false))
-      throw `${coordinates}: Already attacked there Captain`;
+  #isAlreadyAttacked(coordinate) {
+    return this.board[coordinate].attacked === false;
   }
 
   #allShipsSunk() {

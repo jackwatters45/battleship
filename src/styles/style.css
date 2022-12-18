@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Nuosu+SIL&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: roboto, "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 500;
+}
+
+:root {
+    background-color: #faf8ef;
+    color: #776e65;
+}
+
+/* General styles */
+button,
+a {
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.shadow {
+    box-shadow: 5px 10px 25px rgba(0, 0, 0, .5);
+}
+
+.glow {
+    border: solid #776e65;
+    border-radius: 3px;
+    padding: 6px;
+    box-shadow: 5px 10px 25px rgba(119, 110, 101, 1);
+}
+
+/* Layout */
+.container {
+    display: grid;
+    grid-template-rows: 150px 1fr 40px;
+    height: 100vh;
+    margin: 0 auto;
+    justify-items: center;
+}
+
+/* Nav Bar */
+.nav-bar {
+    width: 860px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 30px;
+}
+
+.title {
+    font-size: 54px;
+}
+
+.restart {
+    justify-self: right;
+    box-shadow: -6px 6px 0 #bbada0;
+    border-radius: 3px;
+    border: none;
+    background-color: #8f7a66;
+    width: 150px;
+    height: 40px;
+    font-size: 24px;
+    color: white;
+    transition: all .15s linear 0s;
+}
+
+.restart:hover {
+    box-shadow: -3px 3px 0;
+}
+
+/* Main Content */
+.main-content {
+    display: grid;
+    grid-template-rows: 80px 1fr;
+}
+
+.players {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+    font-size: 20px;
+    gap: 60px;
+}
+
+.board-container {
+    width: 900px;
+    display: flex;
+    gap: 60px;
+}
+
+.board-background {
+    background-color: #bbada0;
+    height: 420px;
+    width: 420px;
+    border-radius: 6px;
+}
+
+.left-board, .right-board {
+    display: grid;
+    grid-template-rows: repeat(10, 1fr);
+    grid-template-columns: repeat(10, 1fr);
+    gap: 4px;
+    height: 420px;
+    border-radius: 6px;
+    width: 420px;
+    border: 15px solid #bbada0;
+}
+
+.left-board-box, .right-board-box {
+    background-color: rgba(238, 228, 218, .35);
+    border-radius: 3px;
+    display: grid;
+    align-items: center;
+    text-align: center;
+}
+
+.right-board .box {
+    cursor: pointer;
+}
+
+
+.right-board .box:hover {
+    background-color: #faf8ef6d;
+}
+
+/* Footer */
+.footer {
+    justify-self: center;
+    align-self: center;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+/* Overlay */
+.overlay {
+    display: flex;
+    /* JS to remove when winner */
+    height: 500px;
+    width: 500px;
+    border-radius: 6px;
+    position: absolute;
+    background: rgba(238, 228, 218, 0.73);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hidden {
+    /* JS to remove when winner */
+    display: none;
+}
+
+.winner {
+    font-size: 60px;
+    max-width: 450px;
+}

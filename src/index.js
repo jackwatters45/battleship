@@ -1,5 +1,11 @@
 import './styles/style.css';
 import { Computer, Player } from './classes/player';
+import clearBoard from './classes/dom/clearBoard';
+import displayEmptyGameboard from './classes/dom/displayEmptyGameboard';
+import displayShips from './classes/dom/displayShips';
+import isSunk from './classes/dom/isSunk';
+import addSymbol from './classes/dom/addSymbol';
+import gameOver from './classes/dom/gameOver';
 
 ('use strict');
 
@@ -7,11 +13,12 @@ const leftBoard = document.querySelector(`.left-board`);
 const rightBoard = document.querySelector(`.right-board`);
 const newGame = document.querySelector('.restart');
 
-// The game loop should set up a new game by creating Players and Gameboards. For now just populate each Gameboard with predetermined coordinates. You can implement a system for allowing players to place their ships later.
 const gameLoop = () => {
-  clearBoard();
-  // create players
-  const player = new Player('Me');
+  // clear the board before a new game
+  clearBoard(leftBoard, rightBoard);
+
+  // create players and set opponent gameboards
+  const player = new Player('User');
   const cpu = new Computer();
   player.setOpponentGameboard(cpu.gameBoard);
   cpu.setOpponentGameboard(player.gameBoard);
@@ -20,75 +27,49 @@ const gameLoop = () => {
   displayEmptyGameboard(player.gameBoard, leftBoard);
   displayEmptyGameboard(cpu.gameBoard, rightBoard);
 
-  // add event listeners to boxes now that they exist
-  const rightBoxes = document.querySelectorAll(`.right-board-box`);
-  rightBoxes.forEach((box) =>
-    box.addEventListener('click', () => attack(box, player))
-  );
-  // place ships
-  /// random
+  // randomly place ships
   player.gameBoard.placeRandShips();
   cpu.gameBoard.placeRandShips();
-  // TODO actually display board
+
+  // display ships
   displayShips(player.gameBoard.shipsPlaced, leftBoard);
-  displayShips(cpu.gameBoard.shipsPlaced, rightBoard); // Delete once done testing
+  // displayShips(cpu.gameBoard.shipsPlaced, rightBoard);
 
-  /// TODO user places ships
-
-  //
-  // loop to take turns attacking
-  /// user -> clicks oponents board to select where to attack
-  /// oponent -> random attack
-  //// some sort of inication for a hit vs miss
-  //// display info when a ship is sunk
-
-  // game over when all of one players ships are sunk
-  /// click new game to play again
+  // add listeners to allow user to attack
+  addAttackListeners(player, cpu);
 };
 
-const displayEmptyGameboard = (gameBoard, board) => {
-  for (const key of Object.keys(gameBoard.board)) {
-    let newBox = document.createElement('div');
-    newBox.classList.add('box');
-    newBox.classList.add(`${board.classList}-box`);
-    newBox.id = key;
-    board.appendChild(newBox);
+const addAttackListeners = (player, cpu) => {
+  const rightBoxes = document.querySelectorAll(`.right-board-box`);
+  rightBoxes.forEach((box) =>
+    box.addEventListener('click', () => {
+      if (userAttack(box, player)) cpuAttack(cpu);
+    })
+  );
+};
+
+const cpuAttack = (cpu) => {
+  const attackResults = cpu.randomAttack();
+  const boxCoordinate = cpu.moves[cpu.moves.length - 1][0];
+  const box = document.querySelector(`.left-board-box#${boxCoordinate}`);
+  addSymbol(attackResults, box);
+  if (attackResults.sunk) {
+    isSunk(attackResults, box);
+    if (cpu.opponentGameboard.allShipsSunk()) gameOver(cpu);
   }
 };
 
-const attack = (box, player) => {
-  player.attack(box.id);
-  box.style.backgroundColor = 'green';
-};
-
-const displayShips = (shipsPlaced, board) => {
-  shipsPlaced.forEach((ship) => {
-    const shipColor = getShipColor(ship.name);
-    for (const coordinate of ship.coordinates) {
-      const cell = document.querySelector(`.${board.className} #${coordinate}`);
-      cell.style.backgroundColor = shipColor;
-      cell.style.border = 'solid 1px #776e65';
-      cell.classList.add(ship.name);
+const userAttack = (box, player) => {
+  if (!player.opponentGameboard.isAlreadyAttacked(box.id)) {
+    const attackResults = player.attack(box.id);
+    addSymbol(attackResults, box);
+    if (attackResults.sunk) {
+      isSunk(attackResults, box);
+      if (player.opponentGameboard.allShipsSunk()) gameOver(player);
     }
-  });
-};
-
-const getShipColor = (shipName) => {
-  const colors = {
-    Carrier: '#edd073',
-    Battleship: '#f75f3b',
-    Cruiser: '#f77c5f',
-    Submarine: '#f69664',
-    Destroyer: '#f3b27a',
-  };
-  return colors[shipName];
-};
-
-const displayAttacks = () => {};
-
-const clearBoard = () => {
-  leftBoard.innerHTML = '';
-  rightBoard.innerHTML = '';
+    return true;
+  }
+  return false;
 };
 
 newGame.addEventListener('click', () => {

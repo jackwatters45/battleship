@@ -62,15 +62,23 @@ export default class Gameboard {
 
   // sends the ‘hit’ function to the correct ship, or records the coordinates of the missed shot.
   receiveAttack(coordinate) {
-    // makes sure valid coordinate
-    console.log(this.#isAlreadyAttacked(coordinate));
-    // if ship at location it is hit
-    if (this.board[coordinate].shipPlaced) {
-      // that ship is sunk check for end of game
-      if (this.board[coordinate].shipPlaced.hit()) return this.#allShipsSunk();
-    }
     // record that these coordinates have been attacked
     this.board[coordinate].attacked = true;
+    // if ship at location it is hit
+    if (this.board[coordinate].shipPlaced) {
+      // if ship is sunk check for end of game
+
+      this.board[coordinate].shipPlaced.hit()
+
+      // if (this.board[coordinate].shipPlaced.hit()) {
+      //   // if all ships are sunk return game over
+      //   if (this.allShipsSunk()) return 'Game Over';
+      // }
+
+      // if ship is not sunk return ship
+      return this.board[coordinate].shipPlaced;
+    }
+    return false;
   }
 
   // create 10 x 10 gameboard grid -> Row = Letter and column = number
@@ -125,14 +133,15 @@ export default class Gameboard {
     );
   }
 
-  #isAlreadyAttacked(coordinate) {
-    return this.board[coordinate].attacked === false;
+  isAlreadyAttacked(coordinate) {
+    return this.board[coordinate].attacked;
   }
 
-  #allShipsSunk() {
+  allShipsSunk() {
+    let gameOver = true;
     this.shipsPlaced.forEach((ship) => {
-      if (!ship.sunk) return false;
+      if (!ship.sunk) gameOver = false;
     });
-    return true;
+    return gameOver;
   }
 }

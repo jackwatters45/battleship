@@ -13,7 +13,6 @@
     color: #776e65;
 }
 
-/* General styles */
 button,
 a {
     cursor: pointer;
@@ -35,7 +34,6 @@ a {
     box-shadow: 5px 10px 25px rgba(119, 110, 101, 1);
 }
 
-/* Layout */
 .container {
     display: grid;
     grid-template-rows: 150px 1fr 40px;
@@ -44,7 +42,6 @@ a {
     justify-items: center;
 }
 
-/* Nav Bar */
 .nav-bar {
     width: 860px;
     display: grid;
@@ -73,7 +70,6 @@ a {
     box-shadow: -3px 3px 0;
 }
 
-/* Main Content */
 .main-content {
     display: grid;
     grid-template-rows: 80px 1fr;
@@ -101,7 +97,8 @@ a {
     border-radius: 6px;
 }
 
-.left-board, .right-board {
+.left-board,
+.right-board {
     display: grid;
     grid-template-rows: repeat(10, 1fr);
     grid-template-columns: repeat(10, 1fr);
@@ -112,7 +109,8 @@ a {
     border: 15px solid #bbada0;
 }
 
-.left-board-box, .right-board-box {
+.left-board-box,
+.right-board-box {
     background-color: rgba(238, 228, 218, .35);
     border-radius: 3px;
     display: grid;
@@ -129,7 +127,6 @@ a {
     background-color: #faf8ef6d;
 }
 
-/* Footer */
 .footer {
     justify-self: center;
     align-self: center;
@@ -137,10 +134,8 @@ a {
     font-weight: 500;
 }
 
-/* Overlay */
 .overlay {
     display: flex;
-    /* JS to remove when winner */
     height: 500px;
     width: 500px;
     border-radius: 6px;
@@ -152,7 +147,6 @@ a {
 }
 
 .hidden {
-    /* JS to remove when winner */
     display: none;
 }
 

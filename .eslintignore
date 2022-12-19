@@ -1,4 +1,4 @@
-prod/*
+dist/*
 jest.config.js
 package-lock.json
 package.json

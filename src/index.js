@@ -1,11 +1,11 @@
 import './styles/style.css';
 import { Computer, Player } from './classes/player';
-import clearBoard from './classes/dom/clearBoard';
-import displayEmptyGameboard from './classes/dom/displayEmptyGameboard';
-import displayShips from './classes/dom/displayShips';
-import isSunk from './classes/dom/isSunk';
-import addSymbol from './classes/dom/addSymbol';
-import gameOver from './classes/dom/gameOver';
+import clearBoard from './dom/clearBoard';
+import displayEmptyGameboard from './dom/displayEmptyGameboard';
+import displayShips from './dom/displayShips';
+import isSunk from './dom/isSunk';
+import addSymbol from './dom/addSymbol';
+import gameOver from './dom/gameOver';
 
 ('use strict');
 

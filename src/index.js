@@ -11,6 +11,7 @@ import gameOver from './dom/gameOver';
 
 const leftBoard = document.querySelector(`.left-board`);
 const rightBoard = document.querySelector(`.right-board`);
+
 const newGame = document.querySelector('.restart');
 
 const gameLoop = () => {
@@ -38,6 +39,10 @@ const gameLoop = () => {
   // add listeners to allow user to attack
   addAttackListeners(player, cpu);
 };
+
+newGame.addEventListener('click', () => {
+  gameLoop();
+});
 
 const addAttackListeners = (player, cpu) => {
   const rightBoxes = document.querySelectorAll(`.right-board-box`);
@@ -71,9 +76,5 @@ const userAttack = (box, player) => {
   }
   return false;
 };
-
-newGame.addEventListener('click', () => {
-  gameLoop();
-});
 
 gameLoop();

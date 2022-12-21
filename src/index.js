@@ -55,7 +55,7 @@ const addAttackListeners = (player, cpu) => {
 
 const cpuAttack = (cpu) => {
   const attackResults = cpu.randomAttack();
-  const boxCoordinate = cpu.moves[cpu.moves.length - 1][0];
+  const boxCoordinate = cpu.moves[cpu.moves.length - 1]['coordinate'];
   const box = document.querySelector(`.left-board-box#${boxCoordinate}`);
   addSymbol(attackResults, box);
   if (attackResults.sunk) {

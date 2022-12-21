@@ -67,15 +67,8 @@ export default class Gameboard {
     // if ship at location it is hit
     if (this.board[coordinate].shipPlaced) {
       // if ship is sunk check for end of game
-
       this.board[coordinate].shipPlaced.hit();
-
-      // if (this.board[coordinate].shipPlaced.hit()) {
-      //   // if all ships are sunk return game over
-      //   if (this.allShipsSunk()) return 'Game Over';
-      // }
-
-      // if ship is not sunk return ship
+      // return ship
       return this.board[coordinate].shipPlaced;
     }
     return false;

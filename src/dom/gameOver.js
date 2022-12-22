@@ -1,4 +1,3 @@
-// TODO
 export default (player) => {
   const overlay = document.querySelectorAll('.overlay');
   let leftOverlay = overlay[0];
@@ -12,4 +11,7 @@ export default (player) => {
 
   leftOverlay.classList.remove('hidden');
   rightOverlay.classList.remove('hidden');
+
+  // return false so that if the player wins the cpu's turn is not triggered
+  return false;
 };

@@ -34,7 +34,7 @@ const gameLoop = () => {
 
   // display ships
   displayShips(player.gameBoard.shipsPlaced, leftBoard);
-  // displayShips(cpu.gameBoard.shipsPlaced, rightBoard);
+  displayShips(cpu.gameBoard.shipsPlaced, rightBoard);
 
   // add listeners to allow user to attack
   addAttackListeners(player, cpu);
@@ -70,7 +70,9 @@ const userAttack = (box, player) => {
     addSymbol(attackResults, box);
     if (attackResults.sunk) {
       isSunk(attackResults, box);
-      if (player.opponentGameboard.allShipsSunk()) gameOver(player);
+      if (player.opponentGameboard.allShipsSunk()) {
+        return gameOver(player);
+      }
     }
     return true;
   }

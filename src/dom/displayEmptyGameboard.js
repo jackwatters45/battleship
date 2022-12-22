@@ -3,6 +3,7 @@ export default (gameBoard, board) => {
     let newBox = document.createElement('div');
     newBox.classList.add(`${board.classList}-box`);
     newBox.id = key;
+    newBox.title = key
     board.appendChild(newBox);
   }
 };

@@ -24,89 +24,133 @@ export class Player {
 export class Computer extends Player {
   constructor() {
     super('Computer');
-    this.search = this.#newSearch();
+    this.search = { searching: false, coordinate: null };
   }
 
-  #newSearch() {
-    return { searching: false, coordinate: null, ships: [] };
+  #newSearch(searching = false, coordinate = null) {
+    this.search = { searching: searching, coordinate: coordinate };
   }
 
-  randomAttack() {
-    let nextCoordinate = this.#generateCoordinates();
-    if (this.moves.length > 0) {
-      let previousMove = this.moves[this.moves.length - 1];
-
-      // if ship was sunk last turn just use the random coordinate and reset search
-      if (previousMove['coordinateData']['shipPlaced']['sunk']) {
-        this.search = this.#newSearch();
-        return this.attack(nextCoordinate);
-      }
-
-      // if not currently searching and hit a ship add search data
-      if (
-        !this.search['searching'] &&
-        previousMove['coordinateData'].shipPlaced
-      ) {
-        console.log('here issue?');
-        this.search['coordinate'] = previousMove['coordinate'];
-        this.search['searching'] = 'above';
-        console.log(this.search);
-      }
-
-      // if currently searching
-      if (this.search['searching'])
-        // search based using either the original coordinate or the previous depending on if the previous move hit a ship
-        nextCoordinate = previousMove['coordinateData'].shipPlaced
-          ? this.#searchAround(previousMove['coordinate'])
-          : (this.#getNextSearchDirection(),
-            this.#searchAround(this.search['coordinate']));
-    }
-    return this.attack(nextCoordinate);
-  }
-
-  #getNextSearchDirection() {
+  #setNextSearchDirection() {
     const searchDirections = ['above', 'below', 'left', 'right'];
     const currentIndex = searchDirections.indexOf(this.search['searching']);
     const newIndex = currentIndex + 1;
     this.search['searching'] = searchDirections[newIndex];
   }
 
-  // a little buggy so look into that
-  // needs to keep track of each indiviaul ship it comes in contact with nd use that a like a queue
-  // why the h does the x disapear somethimes
-  #searchAround(searchCoordinate) {
-    console.log(searchCoordinate);
+  #checkOtherShips() {
+    const keys = Object.keys(this.opponentGameboard.board);
+    for (const key of keys) {
+      // if has been attacked and is not sunk return the coordinate
+      if (
+        this.opponentGameboard.board[key].attacked &&
+        this.opponentGameboard.board[key].shipPlaced &&
+        !this.opponentGameboard.board[key].shipPlaced.sunk
+      )
+        return key;
+    }
+    return false;
+  }
 
+  randomAttack() {
+    // if first move then use random coordinate
+    if (!this.moves.length) return this.attack(this.#getRandCoordinate());
+    // previous move is the last move in the this.moves list
+    let previousMove = this.moves[this.moves.length - 1];
+    // if not searching
+    if (!this.search.searching) {
+      // if ship is hit begin new search usimg previous coordinate
+      if (previousMove['coordinateData'].shipPlaced)
+        this.#newSearch('above', previousMove.coordinate);
+      // if not ship hit attack random coordinate
+      else return this.attack(this.#getRandCoordinate());
+    }
+    // if ship was sunk last move
+    if (previousMove['coordinateData']['shipPlaced']['sunk']) {
+      const otherHits = this.#checkOtherShips();
+      // if there are identified ships not sunk
+      if (otherHits) this.#newSearch('above', otherHits);
+      // if no queue start a blank new search and attack random target
+      else {
+        this.#newSearch();
+        return this.attack(this.#getRandCoordinate());
+      }
+    }
+    // search based on whether or not the previous search found anything
+    if (
+      previousMove['coordinateData'].shipPlaced &&
+      !previousMove['coordinateData']['shipPlaced']['sunk']
+    ) {
+      const nextCoordinate = this.#searchAround(previousMove['coordinate']);
+      return this.attack(nextCoordinate);
+    } else {
+      const nextCoordinate = this.#tryAgain(this.search['coordinate']);
+      return this.attack(nextCoordinate);
+    }
+  }
+
+  #tryAgain(coordinate) {
+    this.#setNextSearchDirection();
+    return this.#searchAround(coordinate);
+  }
+
+  #searchAround(searchCoordinate) {
     const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-    const [row, ...column] = searchCoordinate.split('');
+    let [row, ...column] = searchCoordinate.split('');
     const rowIndex = letters.indexOf(row);
 
     let nextCoordinate;
     switch (this.search['searching']) {
       case 'above': {
         nextCoordinate = `${letters[rowIndex - 1]}${column}`;
-        if (Object.keys(this.opponentGameboard.board).includes(nextCoordinate))
+        if (
+          Object.keys(this.opponentGameboard.board).includes(nextCoordinate) &&
+          !this.opponentGameboard.board[nextCoordinate].attacked
+        ) {
+          this.search.searching = 'above';
           return nextCoordinate;
+        }
       }
       case 'below': {
         nextCoordinate = `${letters[rowIndex + 1]}${column}`;
-        if (Object.keys(this.opponentGameboard.board).includes(nextCoordinate))
+        if (
+          Object.keys(this.opponentGameboard.board).includes(nextCoordinate) &&
+          !this.opponentGameboard.board[nextCoordinate].attacked
+        ) {
+          this.search.searching = 'below';
           return nextCoordinate;
+        }
       }
-      case 'left':
+      case 'left': {
         nextCoordinate = `${row}${parseInt(column) - 1}`;
-        if (Object.keys(this.opponentGameboard.board).includes(nextCoordinate))
+        if (
+          Object.keys(this.opponentGameboard.board).includes(nextCoordinate) &&
+          !this.opponentGameboard.board[nextCoordinate].attacked
+        ) {
+          this.search.searching = 'left';
           return nextCoordinate;
-      case 'right':
+        }
+      }
+      case 'right': {
         nextCoordinate = `${row}${parseInt(column) + 1}`;
-        if (Object.keys(this.opponentGameboard.board).includes(nextCoordinate))
+        if (
+          Object.keys(this.opponentGameboard.board).includes(nextCoordinate) &&
+          !this.opponentGameboard.board[nextCoordinate].attacked
+        ) {
+          this.search.searching = 'right';
           return nextCoordinate;
+        }
+      }
+      default: {
+        return this.search['coordinate'] === searchCoordinate
+          ? this.#tryAgain(this.moves[this.moves.length - 1].coordinate)
+          : this.#tryAgain(this.search['coordinate']);
+      }
     }
   }
 
-  #generateCoordinates() {
+  #getRandCoordinate() {
     let coordinate = false;
-
     while (!coordinate) {
       const keys = Object.keys(this.opponentGameboard.board);
       const randKey = Math.floor(keys.length * Math.random());

@@ -27,7 +27,7 @@ export default class Gameboard {
         coordinates = this.#getOtherCoordinates(
           randStart,
           randOrientation,
-          ship.length
+          ship.length,
         );
         if (Array.isArray(coordinates)) {
           isValidShip = true;
@@ -41,7 +41,7 @@ export default class Gameboard {
   userPlaceShip(start, orientation, ship) {
     this.#placeShip(
       this.#getOtherCoordinates(start, orientation, ship.length),
-      ship.name
+      ship.name,
     );
   }
 
@@ -54,7 +54,7 @@ export default class Gameboard {
     // for each coordinate
     coordinates.forEach((coordinate) => {
       // shipPlaced = true for each gameboard coordinate where ship is placed
-      this.board[coordinate]['shipPlaced'] = ship;
+      this.board[coordinate].shipPlaced = ship;
     });
     // return the new ship object
     return ship;
@@ -93,36 +93,37 @@ export default class Gameboard {
   #getOtherCoordinates(start, isHorizontal, length) {
     const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
     // get row and column from coordinate string
-    let [row, ...columnArr] = start.split('');
+    const [row, ...columnArr] = start.split('');
     // convert column to int
     const column = parseInt(
-      columnArr.reduce((numString1, numString2) => numString1 + numString2)
+      columnArr.reduce((numString1, numString2) => numString1 + numString2),
     );
     // get index of row from letters array
     const rowIndex = letters.indexOf(row);
     // initalize coordinates list
     const coordinates = [];
 
-    if (isHorizontal)
+    if (isHorizontal) {
       for (let i = column; i < column + length; i++) {
         const newCoordinate = `${row}${i}`;
         if (!this.#isValidCoordinate(newCoordinate)) return false;
         coordinates.push(newCoordinate);
       }
-    else
+    } else {
       for (let i = rowIndex; i < rowIndex + length; i++) {
         const newCoordinate = `${letters[i]}${column}`;
         if (!this.#isValidCoordinate(newCoordinate)) return false;
         coordinates.push(newCoordinate);
       }
+    }
     return coordinates;
   }
 
   // checks if coordinates are all on the board and not already taken
   #isValidCoordinate(coordinate) {
     return (
-      Object.keys(this.board).includes(coordinate) &&
-      this.board[coordinate].shipPlaced === false
+      Object.keys(this.board).includes(coordinate)
+      && this.board[coordinate].shipPlaced === false
     );
   }
 

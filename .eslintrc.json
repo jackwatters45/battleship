@@ -10,6 +10,5 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["jest"],
-  "class-methods-use-this": ["error", { "exceptMethods": ["#createGameboard"] }]
+  "plugins": ["jest"]
 }

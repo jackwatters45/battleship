@@ -1,5 +1,6 @@
 import './styles/style.css';
-import { Computer, Player } from './classes/player';
+import Player from './classes/player';
+import Computer from './classes/computer';
 import clearBoard from './dom/clearBoard';
 import displayEmptyGameboard from './dom/displayEmptyGameboard';
 import displayShips from './dom/displayShips';
@@ -9,8 +10,8 @@ import gameOver from './dom/gameOver';
 
 ('use strict');
 
-const leftBoard = document.querySelector(`.left-board`);
-const rightBoard = document.querySelector(`.right-board`);
+const leftBoard = document.querySelector('.left-board');
+const rightBoard = document.querySelector('.right-board');
 
 const newGame = document.querySelector('.restart');
 
@@ -45,17 +46,15 @@ newGame.addEventListener('click', () => {
 });
 
 const addAttackListeners = (player, cpu) => {
-  const rightBoxes = document.querySelectorAll(`.right-board-box`);
-  rightBoxes.forEach((box) =>
-    box.addEventListener('click', () => {
-      if (userAttack(box, player)) cpuAttack(cpu);
-    })
-  );
+  const rightBoxes = document.querySelectorAll('.right-board-box');
+  rightBoxes.forEach((box) => box.addEventListener('click', () => {
+    if (userAttack(box, player)) cpuAttack(cpu);
+  }));
 };
 
 const cpuAttack = (cpu) => {
   const attackResults = cpu.randomAttack();
-  const boxCoordinate = cpu.moves[cpu.moves.length - 1]['coordinate'];
+  const boxCoordinate = cpu.moves[cpu.moves.length - 1].coordinate;
   const box = document.querySelector(`.left-board-box#${boxCoordinate}`);
   addSymbol(attackResults, box);
   if (attackResults.sunk) {

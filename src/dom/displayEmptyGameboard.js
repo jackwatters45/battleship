@@ -1,9 +1,9 @@
 export default (gameBoard, board) => {
-  for (const key of Object.keys(gameBoard.board)) {
-    let newBox = document.createElement('div');
+  Object.keys(gameBoard.board).forEach((key) => {
+    const newBox = document.createElement('div');
     newBox.classList.add(`${board.classList}-box`);
     newBox.id = key;
-    newBox.title = key
+    newBox.title = key;
     board.appendChild(newBox);
-  }
+  });
 };

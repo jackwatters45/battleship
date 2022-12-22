@@ -3,12 +3,11 @@ import Gameboard from '../classes/gameboard';
 describe('tests for gameboard', () => {
   let gameboard;
   let ship1;
-  let ship2;
 
   beforeEach(() => {
     gameboard = new Gameboard();
     ship1 = gameboard.placeShip(['A1', 'B1', 'C1', 'D1'], 'Battleship');
-    ship2 = gameboard.placeShip(['A2', 'B2', 'C2'], 'Cruiser');
+    gameboard.placeShip(['A2', 'B2', 'C2'], 'Cruiser');
 
     gameboard.receiveAttack('A2');
     gameboard.receiveAttack('B2');
@@ -20,7 +19,7 @@ describe('tests for gameboard', () => {
   });
 
   it('coordinates have attacked and ship placed properties set to false', () => {
-    expect(gameboard.board['A4']).toStrictEqual({
+    expect(gameboard.board.A4).toStrictEqual({
       shipPlaced: false,
       attacked: false,
     });
@@ -37,28 +36,28 @@ describe('tests for gameboard', () => {
 
   it('account for out of bounds', () => {
     expect(() => gameboard.placeShip(['Z2', 'C6'])).toThrow(
-      'Invalid Placement'
+      'Invalid Placement',
     );
   });
 
   it('try to place ship where one already exists', () => {
     expect(() => gameboard.placeShip(['A1', 'A2'])).toThrow(
-      'Invalid Placement'
+      'Invalid Placement',
     );
   });
 
   it('receive attack that misses', () => {
-    expect(gameboard.board['A3'].attacked).toBe(true);
+    expect(gameboard.board.A3.attacked).toBe(true);
   });
 
   it('receive attack that hits', () => {
-    expect(gameboard.board['A2'].attacked).toBe(true);
-    expect(gameboard.board['A2'].shipPlaced.hits).toEqual(2);
+    expect(gameboard.board.A2.attacked).toBe(true);
+    expect(gameboard.board.A2.shipPlaced.hits).toEqual(2);
   });
 
   it('ship is sunk', () => {
     gameboard.receiveAttack('C2');
-    expect(gameboard.board['A2'].shipPlaced.sunk).toBe(true);
+    expect(gameboard.board.A2.shipPlaced.sunk).toBe(true);
   });
 
   it('all users ships are sunk', () => {

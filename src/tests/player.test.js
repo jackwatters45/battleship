@@ -31,7 +31,7 @@ describe('player and computer class', () => {
 
   it('player attacks', () => {
     player.attack('A1', computer.gameBoard);
-    expect(computer.gameBoard.board['A1']).toMatchObject({ attacked: true });
+    expect(computer.gameBoard.board.A1).toMatchObject({ attacked: true });
   });
 
   it('computer attacks random location', () => {

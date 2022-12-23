@@ -1,4 +1,5 @@
-import { Player, Computer } from '../classes/player';
+import Player from '../classes/player';
+import Computer from '../classes/computer';
 
 describe('player and computer class', () => {
   let player;

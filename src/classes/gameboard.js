@@ -1,3 +1,5 @@
+/* eslint-disable class-methods-use-this */
+/* eslint-disable no-underscore-dangle */
 import Ship from './ship';
 
 export default class Gameboard {
@@ -97,6 +99,7 @@ export default class Gameboard {
     // convert column to int
     const column = parseInt(
       columnArr.reduce((numString1, numString2) => numString1 + numString2),
+      10,
     );
     // get index of row from letters array
     const rowIndex = letters.indexOf(row);
@@ -104,13 +107,13 @@ export default class Gameboard {
     const coordinates = [];
 
     if (isHorizontal) {
-      for (let i = column; i < column + length; i++) {
+      for (let i = column; i < column + length; i += 1) {
         const newCoordinate = `${row}${i}`;
         if (!this.#isValidCoordinate(newCoordinate)) return false;
         coordinates.push(newCoordinate);
       }
     } else {
-      for (let i = rowIndex; i < rowIndex + length; i++) {
+      for (let i = rowIndex; i < rowIndex + length; i += 1) {
         const newCoordinate = `${letters[i]}${column}`;
         if (!this.#isValidCoordinate(newCoordinate)) return false;
         coordinates.push(newCoordinate);

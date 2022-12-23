@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import './styles/style.css';
 import Player from './classes/player';
 import Computer from './classes/computer';
@@ -7,7 +8,9 @@ import displayShips from './dom/displayShips';
 import isSunk from './dom/isSunk';
 import addSymbol from './dom/addSymbol';
 import gameOver from './dom/gameOver';
+import toggleOrientation from './dom/toggleOrientation';
 
+// eslint-disable-next-line no-unused-expressions
 ('use strict');
 
 const leftBoard = document.querySelector('.left-board');
@@ -48,9 +51,14 @@ newGame.addEventListener('click', () => {
 const addAttackListeners = (player, cpu) => {
   const rightBoxes = document.querySelectorAll('.right-board-box');
   rightBoxes.forEach((box) => box.addEventListener('click', () => {
-    if (userAttack(box, player)) cpuAttack(cpu);
+    if (userAttack(box, player)) {
+      setTimeout(cpuAttack, 200, cpu);
+    }
   }));
 };
+
+const orientationButton = document.querySelector('.orientation');
+orientationButton.addEventListener('click', toggleOrientation);
 
 const cpuAttack = (cpu) => {
   const attackResults = cpu.randomAttack();

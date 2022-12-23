@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 export default (attackResults, box) => {
   if (attackResults) {
     box.innerHTML = 'x';

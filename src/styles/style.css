@@ -2,7 +2,7 @@
 
 * {
     margin: 0;
-    padding: 0;
+    /* padding: 0; */
     box-sizing: border-box;
     font-family: roboto, "Clear Sans", "Helvetica Neue", Arial, sans-serif;
     font-weight: 500;
@@ -18,7 +18,8 @@ body {
 }
 
 button,
-a {
+a,
+.right-board {
     cursor: pointer;
 }
 
@@ -70,13 +71,26 @@ a {
     transition: all .15s linear 0s;
 }
 
-.restart:hover {
+.orientation {
+    border-radius: 3px;
+    background-color: #8f7a66;
+    justify-self: right;
+    align-self: center;
+    border: none;
+    color: white;
+    transition: all .15s linear 0s;
+    font-size: 18px;
+    padding: 6px;
+}
+
+.restart:hover,
+.orientation:hover {
     box-shadow: -3px 3px 0;
 }
 
 .main-content {
     display: grid;
-    grid-template-rows: 80px 1fr;
+    grid-template-rows: 80px 520px 1fr;
 }
 
 .players {
@@ -114,7 +128,8 @@ a {
 }
 
 .left-board-box,
-.right-board-box {
+.right-board-box,
+.box {
     background-color: rgba(238, 228, 218, .35);
     border-radius: 3px;
     display: grid;
@@ -122,17 +137,109 @@ a {
     text-align: center;
 }
 
-.right-board .right-board-box {
+.right-board {
     cursor: pointer;
 }
 
 
-.right-board .box:hover {
+.right-board-box:hover {
     background-color: #faf8ef6d;
 }
 
-.footer {
+.ships-container {
+    background-color: #bbada0;
+    width: 600px;
+    height: 300px;
+    border-radius: 6px;
     justify-self: center;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    display: grid;
+}
+
+.ships-background {
+    background-color: rgba(238, 228, 218, .35);
+    height: 270px;
+    width: 570px;
+    border-radius: 6px;
+    color: #faf8ef;
+    font-size: 36px;
+    display: grid;
+    grid-template-rows: 60px 1fr;
+}
+
+.ship-header {
+    margin: 12px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.ship-text {
+    justify-self: start;
+}
+
+.ships {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
+.ship {
+    gap: 4px;
+    display: flex;
+    flex-direction: column;
+}
+
+.ship:hover {
+    box-shadow: 5px 10px 25px rgba(119, 110, 101, 1);
+}
+
+.box {
+    color: #776e65;
+    height: 35px;
+    width: 35px;
+    border: 1px solid rgb(119, 110, 101);
+}
+
+#carrier>.box {
+    background-color: rgb(237, 208, 115);
+}
+
+#battleship>.box {
+    background-color: rgb(247, 95, 59)
+}
+
+#cruiser>.box {
+    background-color: rgb(247, 124, 95);
+}
+
+#submarine>.box {
+    background-color: rgb(246, 150, 100);
+}
+
+#destroyer>.box {
+    background-color: rgb(243, 178, 122);
+}
+
+.vertical-orientation {
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.horizontal-orientation {
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+.ship.horizontal {
+    flex-direction: row;
+}
+
+#submarine.horizontal,
+#cruiser.horizontal {
+    grid-row: 2;
+}
+
+.footer {
     align-self: center;
     font-size: 18px;
     font-weight: 500;

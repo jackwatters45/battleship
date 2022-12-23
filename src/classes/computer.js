@@ -1,4 +1,6 @@
-import { Player } from './player';
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-fallthrough */
+import Player from './player';
 
 export default class Computer extends Player {
   constructor() {
@@ -25,7 +27,9 @@ export default class Computer extends Player {
         this.opponentGameboard.board[key].attacked
         && this.opponentGameboard.board[key].shipPlaced
         && !this.opponentGameboard.board[key].shipPlaced.sunk
-      ) { return key; }
+      ) {
+        return key;
+      }
     }
     return false;
   }
@@ -37,10 +41,10 @@ export default class Computer extends Player {
     const previousMove = this.moves[this.moves.length - 1];
     // if not searching
     if (!this.search.searching) {
-      // if ship is hit begin new search usimg previous coordinate
-      if (previousMove.coordinateData.shipPlaced) { this.#newSearch('above', previousMove.coordinate); }
-      // if not ship hit attack random coordinate
-      else return this.attack(this.#getRandCoordinate());
+      // if ship is hit begin new search usimg previous coordinate, else attack random coordinate
+      if (previousMove.coordinateData.shipPlaced) {
+        this.#newSearch('above', previousMove.coordinate);
+      } else return this.attack(this.#getRandCoordinate());
     }
     // if ship was sunk last move
     if (previousMove.coordinateData.shipPlaced.sunk) {
@@ -98,7 +102,7 @@ export default class Computer extends Player {
         }
       }
       case 'left': {
-        nextCoordinate = `${row}${parseInt(column) - 1}`;
+        nextCoordinate = `${row}${parseInt(column, 10) - 1}`;
         if (
           Object.keys(this.opponentGameboard.board).includes(nextCoordinate)
           && !this.opponentGameboard.board[nextCoordinate].attacked
@@ -108,7 +112,7 @@ export default class Computer extends Player {
         }
       }
       case 'right': {
-        nextCoordinate = `${row}${parseInt(column) + 1}`;
+        nextCoordinate = `${row}${parseInt(column, 10) + 1}`;
         if (
           Object.keys(this.opponentGameboard.board).includes(nextCoordinate)
           && !this.opponentGameboard.board[nextCoordinate].attacked
@@ -131,7 +135,9 @@ export default class Computer extends Player {
       const keys = Object.keys(this.opponentGameboard.board);
       const randKey = Math.floor(keys.length * Math.random());
       const randomCoordinate = keys[randKey];
-      if (!this.opponentGameboard.board[keys[randKey]].attacked) { coordinate = randomCoordinate; }
+      if (!this.opponentGameboard.board[keys[randKey]].attacked) {
+        coordinate = randomCoordinate;
+      }
     }
     return coordinate;
   }

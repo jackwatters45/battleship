@@ -70,9 +70,7 @@ const userAttack = (box, player) => {
     addSymbol(attackResults, box);
     if (attackResults.sunk) {
       isSunk(attackResults, box);
-      if (player.opponentGameboard.allShipsSunk()) {
-        return gameOver(player);
-      }
+      if (player.opponentGameboard.allShipsSunk()) return gameOver(player);
     }
     return true;
   }
@@ -86,19 +84,24 @@ const placeShips = (player, cpu) => {
     box.addEventListener('dragover', (e) => e.preventDefault());
     box.addEventListener('dragenter', (e) => e.preventDefault());
     box.addEventListener('drop', (e) => {
-      const ship = drop(e);
-      if (ship) {
-        player.gameBoard.userPlaceShip(
-          ship.start,
-          ship.isHorizontal,
-          ship.length,
-          ship.name,
-        );
-        displayShips(player.gameBoard.shipsPlaced, leftBoard);
-      }
-      if (player.gameBoard.shipsPlaced.length === 5) {
-        shipContainer.classList.add('hidden');
-        addAttackListeners(player, cpu);
+      const shipData = drop(e);
+      if (shipData) {
+        if (
+          player.gameBoard.userPlaceShip(
+            shipData.start,
+            shipData.isHorizontal,
+            shipData.length,
+            shipData.name,
+          )
+        ) {
+          displayShips(player.gameBoard.shipsPlaced, leftBoard);
+          // hide the ship in the ship bank and return its data
+          shipData.ship.classList.add('hidden');
+        }
+        if (player.gameBoard.shipsPlaced.length === 5) {
+          shipContainer.classList.add('hidden');
+          addAttackListeners(player, cpu);
+        }
       }
     });
   });

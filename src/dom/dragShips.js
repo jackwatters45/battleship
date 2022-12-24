@@ -66,12 +66,11 @@ export const drop = (e) => {
   // return if either endpoint is not valid
   if (!start || !end) return undefined;
 
-  // hide the ship in the ship bank and return its data
-  ship.classList.add('hidden');
   return {
     start,
     isHorizontal: data.isHorizontal,
     length,
     name: data.id.charAt(0).toUpperCase() + data.id.slice(1),
+    ship,
   };
 };

@@ -41,10 +41,8 @@ export default class Gameboard {
   }
 
   userPlaceShip(start, orientation, length, name) {
-    this.#placeShip(
-      this.#getOtherCoordinates(start, orientation, length),
-      name,
-    );
+    const coordinates = this.#getOtherCoordinates(start, orientation, length);
+    return coordinates ? this.#placeShip(coordinates, name) : false;
   }
 
   // Gameboards should be able to place ships at specific coordinates

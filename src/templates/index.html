@@ -29,49 +29,50 @@
           <div class="left-board"> </div>
         </div>
         <div class="board-background shadow">
+          <div class="ships-container shadow">
+            <div class="ships-background">
+              <div class="ship-header">
+                <div class="ship-text">Place Ships</div>
+                <button class="orientation " type="button">Change Orientation</button>
+              </div>
+              <div class="ships vertical-orientation">
+                <div class="ship" id="carrier" title="Carrier" draggable="true">
+                  <div class="box"></div>
+                  <div class="box"></div>
+                  <div class="box"></div>
+                  <div class="box"></div>
+                  <div class="box"></div>
+                </div>
+                <div class="ship" id="battleship" title="Battleship" draggable="true">
+                  <div class="box"></div>
+                  <div class="box"></div>
+                  <div class="box"></div>
+                  <div class="box"></div>
+                </div>
+                <div class="ship" id="cruiser" title="Cruiser" draggable="true">
+                  <div class="box"></div>
+                  <div class="box"></div>
+                  <div class="box"></div>
+                </div>
+                <div class="ship" id="submarine" title="Submarine" draggable="true">
+                  <div class="box"></div>
+                  <div class="box"></div>
+                  <div class="box"></div>
+                </div>
+                <div class="ship" id="destroyer" title="Destroyer" draggable="true">
+                  <div class="box"></div>
+                  <div class="box"></div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div id="right" class="overlay hidden">
             <p class="winner"></p>
           </div>
           <div class="right-board"></div>
         </div>
       </div>
-      <div class="ships-container shadow">
-        <div class="ships-background">
-          <div class="ship-header">
-            <div class="ship-text">Drag Ships to Place</div>
-            <button class="orientation " type="button">Change Orientation</button>
-          </div>
-          <div class="ships vertical-orientation">
-            <div class="ship" id="carrier" title="Carrier" draggable="true">
-              <div class="box"></div>
-              <div class="box"></div>
-              <div class="box"></div>
-              <div class="box"></div>
-              <div class="box"></div>
-            </div>
-            <div class="ship" id="battleship" title="Battleship" draggable="true">
-              <div class="box"></div>
-              <div class="box"></div>
-              <div class="box"></div>
-              <div class="box"></div>
-            </div>
-            <div class="ship" id="cruiser" title="Cruiser" draggable="true">
-              <div class="box"></div>
-              <div class="box"></div>
-              <div class="box"></div>
-            </div>
-            <div class="ship" id="submarine" title="Submarine" draggable="true">
-              <div class="box"></div>
-              <div class="box"></div>
-              <div class="box"></div>
-            </div>
-            <div class="ship" id="destroyer" title="Destroyer" draggable="true">
-              <div class="box"></div>
-              <div class="box"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+      
     </div>
     <div class="footer"><a href="https://github.com/jackwatters45">
         ™Jack Watters 2022</a>

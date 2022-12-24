@@ -1,7 +1,7 @@
 export const dragStart = (e) => {
   // get the distance of the click from left and top of the ships
-  const x = e.pageX - e.currentTarget.offsetLeft;
-  const y = e.pageY - e.currentTarget.offsetTop;
+  const x = e.layerX - e.currentTarget.offsetLeft;
+  const y = e.layerY - e.currentTarget.offsetTop;
 
   // get orientation
   const isHorizontal = !!e.target.classList[1];

@@ -79,7 +79,7 @@ a {
     border: none;
     color: white;
     transition: all .15s linear 0s;
-    font-size: 18px;
+    font-size: 12.5px;
     padding: 6px;
 }
 
@@ -147,9 +147,10 @@ a {
 }
 
 .ships-container {
+    position:absolute;
     background-color: #bbada0;
-    width: 600px;
-    height: 300px;
+    width: 420px;
+    height: 420px;
     border-radius: 6px;
     justify-self: center;
     justify-content: center;
@@ -160,11 +161,11 @@ a {
 
 .ships-background {
     background-color: rgba(238, 228, 218, .35);
-    height: 270px;
-    width: 570px;
+    height: 390px;
+    width: 390px;
     border-radius: 6px;
     color: #faf8ef;
-    font-size: 36px;
+    font-size: 32px;
     display: grid;
     grid-template-rows: 60px 1fr;
 }
@@ -197,8 +198,8 @@ a {
 
 .box {
     color: #776e65;
-    height: 35px;
-    width: 35px;
+    height: 36px;
+    width: 36px;
     border: 1px solid rgb(119, 110, 101);
 }
 
@@ -227,16 +228,11 @@ a {
 }
 
 .horizontal-orientation {
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: repeat(5, 1fr);
 }
 
 .ship.horizontal {
     flex-direction: row;
-}
-
-#submarine.horizontal,
-#cruiser.horizontal {
-    grid-row: 2;
 }
 
 .footer {

@@ -1,0 +1,267 @@
+@import url(https://fonts.googleapis.com/css2?family=Nuosu+SIL&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap);
+* {
+    margin: 0;
+    /* padding: 0; */
+    box-sizing: border-box;
+    font-family: roboto, "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 500;
+}
+
+:root {
+    background-color: #faf8ef;
+    color: #776e65;
+}
+
+body {
+    user-select: none;
+}
+
+button,
+a,
+.right-board {
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.shadow {
+    box-shadow: 5px 10px 25px rgba(0, 0, 0, .5);
+}
+
+.glow {
+    border: solid #776e65;
+    border-radius: 3px;
+    padding: 6px;
+    box-shadow: 5px 10px 25px rgba(119, 110, 101, 1);
+}
+
+.container {
+    display: grid;
+    grid-template-rows: 150px 1fr 40px;
+    height: 100vh;
+    margin: 0 auto;
+    justify-items: center;
+}
+
+.nav-bar {
+    width: 860px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 30px;
+}
+
+.title {
+    font-size: 54px;
+}
+
+.restart {
+    justify-self: right;
+    box-shadow: -6px 6px 0 #bbada0;
+    border-radius: 3px;
+    border: none;
+    background-color: #8f7a66;
+    width: 150px;
+    height: 40px;
+    font-size: 24px;
+    color: white;
+    transition: all .15s linear 0s;
+}
+
+.orientation {
+    border-radius: 3px;
+    background-color: #8f7a66;
+    justify-self: right;
+    align-self: center;
+    border: none;
+    color: white;
+    transition: all .15s linear 0s;
+    font-size: 18px;
+    padding: 6px;
+}
+
+.restart:hover,
+.orientation:hover {
+    box-shadow: -3px 3px 0;
+}
+
+.main-content {
+    display: grid;
+    grid-template-rows: 80px 520px 1fr;
+}
+
+.players {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+    font-size: 20px;
+    gap: 60px;
+}
+
+.board-container {
+    width: 900px;
+    display: flex;
+    gap: 60px;
+}
+
+.board-background {
+    background-color: #bbada0;
+    height: 420px;
+    width: 420px;
+    border-radius: 6px;
+}
+
+.left-board,
+.right-board {
+    display: grid;
+    grid-template-rows: repeat(10, 1fr);
+    grid-template-columns: repeat(10, 1fr);
+    gap: 3px;
+    height: 420px;
+    border-radius: 6px;
+    width: 420px;
+    border: 15px solid #bbada0;
+}
+
+.left-board-box,
+.right-board-box,
+.box {
+    background-color: rgba(238, 228, 218, .35);
+    border-radius: 3px;
+    display: grid;
+    align-items: center;
+    text-align: center;
+}
+
+.right-board {
+    cursor: pointer;
+}
+
+
+.right-board-box:hover {
+    background-color: #faf8ef6d;
+}
+
+.ships-container {
+    background-color: #bbada0;
+    width: 600px;
+    height: 300px;
+    border-radius: 6px;
+    justify-self: center;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    display: grid;
+}
+
+.ships-background {
+    background-color: rgba(238, 228, 218, .35);
+    height: 270px;
+    width: 570px;
+    border-radius: 6px;
+    color: #faf8ef;
+    font-size: 36px;
+    display: grid;
+    grid-template-rows: 60px 1fr;
+}
+
+.ship-header {
+    margin: 12px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.ship-text {
+    justify-self: start;
+}
+
+.ships {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
+.ship {
+    gap: 3px;
+    display: flex;
+    flex-direction: column;
+}
+
+.ship:hover {
+    box-shadow: 5px 10px 25px rgba(119, 110, 101, 1);
+}
+
+.box {
+    color: #776e65;
+    height: 35px;
+    width: 35px;
+    border: 1px solid rgb(119, 110, 101);
+}
+
+#carrier>.box {
+    background-color: rgb(237, 208, 115);
+}
+
+#battleship>.box {
+    background-color: rgb(247, 95, 59)
+}
+
+#cruiser>.box {
+    background-color: rgb(247, 124, 95);
+}
+
+#submarine>.box {
+    background-color: rgb(246, 150, 100);
+}
+
+#destroyer>.box {
+    background-color: rgb(243, 178, 122);
+}
+
+.vertical-orientation {
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.horizontal-orientation {
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+.ship.horizontal {
+    flex-direction: row;
+}
+
+#submarine.horizontal,
+#cruiser.horizontal {
+    grid-row: 2;
+}
+
+.footer {
+    align-self: center;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.overlay {
+    display: flex;
+    height: 420px;
+    width: 420px;
+    border-radius: 6px;
+    position: absolute;
+    background: rgba(238, 228, 218, 0.5);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+
+.winner {
+    font-size: 72px;
+    max-width: 400px;
+}
+

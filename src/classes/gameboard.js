@@ -1,5 +1,4 @@
 /* eslint-disable class-methods-use-this */
-/* eslint-disable no-underscore-dangle */
 import Ship from './ship';
 
 export default class Gameboard {
@@ -16,28 +15,7 @@ export default class Gameboard {
       { name: 'Submarine', length: 3 },
       { name: 'Destroyer', length: 2 },
     ];
-    shipsToBePlaced.forEach((ship) => {
-      let isValidShip = false;
-      let coordinates;
-
-      while (!isValidShip) {
-        const randStart = Object.keys(this.board)[
-          Math.floor(Math.random() * Object.keys(this.board).length)
-        ];
-        const randOrientation = Math.random() < 0.5;
-
-        coordinates = this.#getOtherCoordinates(
-          randStart,
-          randOrientation,
-          ship.length,
-        );
-        if (Array.isArray(coordinates)) {
-          isValidShip = true;
-        }
-      }
-      this.#placeShip(coordinates, ship.name);
-    });
-    this._shipsToBePlaced = null;
+    shipsToBePlaced.forEach((ship) => this.#placeShip(this.#getRandCoordinates(ship), ship.name));
   }
 
   userPlaceShip(start, orientation, length, name) {
@@ -45,65 +23,59 @@ export default class Gameboard {
     return coordinates ? this.#placeShip(coordinates, name) : false;
   }
 
-  // Gameboards should be able to place ships at specific coordinates
+  receiveAttack(coordinate) {
+    this.board[coordinate].attacked = true;
+    if (this.board[coordinate].shipPlaced) this.board[coordinate].shipPlaced.hit();
+    return this.board[coordinate].shipPlaced;
+  }
+
+  isAlreadyAttacked(coordinate) {
+    return this.board[coordinate].attacked;
+  }
+
+  allShipsSunk() {
+    return !this.shipsPlaced.find((ship) => !ship.sunk);
+  }
+
+  #getRandCoordinates(ship) {
+    const randStart = Object.keys(this.board)[
+      Math.floor(Math.random() * Object.keys(this.board).length)
+    ];
+    const randOrientation = Math.random() < 0.5;
+    const coordinates = this.#getOtherCoordinates(
+      randStart,
+      randOrientation,
+      ship.length,
+    );
+    return coordinates || this.#getRandCoordinates(ship);
+  }
+
   #placeShip(coordinates, name) {
-    // create new ship given coordinates
     const ship = new Ship(coordinates, name);
-    // add ship to list of ships on gameboard
-    this.shipsPlaced.push(ship);
-    // for each coordinate
     coordinates.forEach((coordinate) => {
-      // shipPlaced = true for each gameboard coordinate where ship is placed
       this.board[coordinate].shipPlaced = ship;
     });
-    // return the new ship object
+    this.shipsPlaced.push(ship);
     return ship;
   }
 
-  // sends the ‘hit’ function to the correct ship, or records the coordinates of the missed shot.
-  receiveAttack(coordinate) {
-    // record that these coordinates have been attacked
-    this.board[coordinate].attacked = true;
-    // if ship at location it is hit
-    if (this.board[coordinate].shipPlaced) {
-      // if ship is sunk check for end of game
-      this.board[coordinate].shipPlaced.hit();
-      // return ship
-      return this.board[coordinate].shipPlaced;
-    }
-    return false;
-  }
-
-  // create 10 x 10 gameboard grid -> Row = Letter and column = number
   #createGameboard() {
-    const newGameboard = {};
+    const gameboard = {};
     const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-
     letters.forEach((letter) => {
       for (let i = 1; i <= 10; i += 1) {
-        newGameboard[`${letter}${i}`] = {
-          shipPlaced: false,
-          attacked: false,
-        };
+        gameboard[`${letter}${i}`] = { shipPlaced: false, attacked: false };
       }
     });
-    return newGameboard;
+    return gameboard;
   }
 
   #getOtherCoordinates(start, isHorizontal, length) {
     const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-    // get row and column from coordinate string
     const [row, ...columnArr] = start.split('');
-    // convert column to int
-    const column = parseInt(
-      columnArr.reduce((numString1, numString2) => numString1 + numString2),
-      10,
-    );
-    // get index of row from letters array
+    const column = parseInt(columnArr.reduce((numStr1, numStr2) => numStr1 + numStr2), 10);
     const rowIndex = letters.indexOf(row);
-    // initalize coordinates list
     const coordinates = [];
-
     if (isHorizontal) {
       for (let i = column; i < column + length; i += 1) {
         const newCoordinate = `${row}${i}`;
@@ -120,23 +92,10 @@ export default class Gameboard {
     return coordinates;
   }
 
-  // checks if coordinates are all on the board and not already taken
   #isValidCoordinate(coordinate) {
     return (
       Object.keys(this.board).includes(coordinate)
       && this.board[coordinate].shipPlaced === false
     );
-  }
-
-  isAlreadyAttacked(coordinate) {
-    return this.board[coordinate].attacked;
-  }
-
-  allShipsSunk() {
-    let gameOver = true;
-    this.shipsPlaced.forEach((ship) => {
-      if (!ship.sunk) gameOver = false;
-    });
-    return gameOver;
   }
 }

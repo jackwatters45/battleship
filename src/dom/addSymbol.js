@@ -1,5 +1,5 @@
-/* eslint-disable no-param-reassign */
-export default (attackResults, box) => {
+export default (attackResults, boxCoordinate) => {
+  const box = document.querySelector(boxCoordinate);
   if (attackResults) {
     box.innerHTML = 'x';
     box.style.backgroundColor = '#F87171';

@@ -47,17 +47,16 @@ const gameLoop = () => {
 const addAttackListeners = (player, cpu) => {
   const rightBoxes = document.querySelectorAll('.right-board-box');
   rightBoxes.forEach((box) => box.addEventListener('click', () => {
-    if (userAttack(box, player)) {
-      setTimeout(cpuAttack, 200, cpu);
-    }
+    if (userAttack(box, player)) setTimeout(cpuAttack, 250, cpu);
   }));
 };
 
 const cpuAttack = (cpu) => {
   const attackResults = cpu.randomAttack();
   const boxCoordinate = cpu.moves[cpu.moves.length - 1].coordinate;
-  const box = document.querySelector(`.left-board-box#${boxCoordinate}`);
-  addSymbol(attackResults, box);
+  const boxDivId = `.left-board-box#${boxCoordinate}`;
+  const box = document.querySelector(boxDivId);
+  addSymbol(attackResults, boxDivId);
   if (attackResults.sunk) {
     isSunk(attackResults, box);
     if (cpu.opponentGameboard.allShipsSunk()) gameOver(cpu);
@@ -67,7 +66,8 @@ const cpuAttack = (cpu) => {
 const userAttack = (box, player) => {
   if (!player.opponentGameboard.isAlreadyAttacked(box.id)) {
     const attackResults = player.attack(box.id);
-    addSymbol(attackResults, box);
+    const boxDivID = `.right-board-box#${box.id}`;
+    addSymbol(attackResults, boxDivID);
     if (attackResults.sunk) {
       isSunk(attackResults, box);
       if (player.opponentGameboard.allShipsSunk()) return gameOver(player);
@@ -95,7 +95,6 @@ const placeShips = (player, cpu) => {
           )
         ) {
           displayShips(player.gameBoard.shipsPlaced, leftBoard);
-          // hide the ship in the ship bank and return its data
           shipData.ship.classList.add('hidden');
         }
         if (player.gameBoard.shipsPlaced.length === 5) {

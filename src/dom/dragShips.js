@@ -25,7 +25,6 @@ const calculateEndPoints = (isHorizontal, cell, targetBox, length) => {
   // get start
   if (isHorizontal) startColumn -= cell;
   else startRow = letters[(rowIndex -= cell)];
-
   const start = letters.includes(startRow) && startColumn >= 1 && startColumn <= 10
     ? `${startRow}${startColumn}`
     : false;

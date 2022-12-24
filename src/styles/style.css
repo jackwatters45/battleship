@@ -2,7 +2,6 @@
 
 * {
     margin: 0;
-    /* padding: 0; */
     box-sizing: border-box;
     font-family: roboto, "Clear Sans", "Helvetica Neue", Arial, sans-serif;
     font-weight: 500;
@@ -41,7 +40,7 @@ a {
 
 .container {
     display: grid;
-    grid-template-rows: 150px 1fr 40px;
+    grid-template-rows: 125px 1fr 40px;
     height: 100vh;
     margin: 0 auto;
     justify-items: center;
@@ -90,7 +89,7 @@ a {
 
 .main-content {
     display: grid;
-    grid-template-rows: 80px 520px 1fr;
+    grid-template-rows: 80px 1fr;
 }
 
 .players {

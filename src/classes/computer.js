@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax */
 /* eslint-disable no-fallthrough */
 import Player from './player';
 
@@ -8,56 +7,22 @@ export default class Computer extends Player {
     this.search = { searching: false, coordinate: null };
   }
 
-  #newSearch(searching = false, coordinate = null) {
-    this.search = { searching, coordinate };
-  }
-
-  #setNextSearchDirection() {
-    const searchDirections = ['above', 'below', 'left', 'right'];
-    const currentIndex = searchDirections.indexOf(this.search.searching);
-    const newIndex = currentIndex + 1;
-    this.search.searching = searchDirections[newIndex];
-  }
-
-  #checkOtherShips() {
-    const keys = Object.keys(this.opponentGameboard.board);
-    for (const key of keys) {
-      // if has been attacked and is not sunk return the coordinate
-      if (
-        this.opponentGameboard.board[key].attacked
-        && this.opponentGameboard.board[key].shipPlaced
-        && !this.opponentGameboard.board[key].shipPlaced.sunk
-      ) {
-        return key;
-      }
-    }
-    return false;
-  }
-
   randomAttack() {
-    // if first move then use random coordinate
     if (!this.moves.length) return this.attack(this.#getRandCoordinate());
-    // previous move is the last move in the this.moves list
     const previousMove = this.moves[this.moves.length - 1];
-    // if not searching
     if (!this.search.searching) {
-      // if ship is hit begin new search usimg previous coordinate, else attack random coordinate
       if (previousMove.coordinateData.shipPlaced) {
         this.#newSearch('above', previousMove.coordinate);
       } else return this.attack(this.#getRandCoordinate());
     }
-    // if ship was sunk last move
     if (previousMove.coordinateData.shipPlaced.sunk) {
       const otherHits = this.#checkOtherShips();
-      // if there are identified ships not sunk
       if (otherHits) this.#newSearch('above', otherHits);
-      // if no queue start a blank new search and attack random target
       else {
         this.#newSearch();
         return this.attack(this.#getRandCoordinate());
       }
     }
-    // search based on whether or not the previous search found anything
     if (
       previousMove.coordinateData.shipPlaced
       && !previousMove.coordinateData.shipPlaced.sunk
@@ -67,6 +32,14 @@ export default class Computer extends Player {
     }
     const nextCoordinate = this.#tryAgain(this.search.coordinate);
     return this.attack(nextCoordinate);
+  }
+
+  #getRandCoordinate() {
+    const keys = Object.keys(this.opponentGameboard.board);
+    const randomCoordinate = keys[Math.floor(keys.length * Math.random())];
+    return this.opponentGameboard.board[randomCoordinate].attacked
+      ? this.#getRandCoordinate()
+      : randomCoordinate;
   }
 
   #tryAgain(coordinate) {
@@ -121,7 +94,7 @@ export default class Computer extends Player {
           return nextCoordinate;
         }
       }
-      default: {
+      default: { // TODO this is probably no bueno
         return this.search.coordinate === searchCoordinate
           ? this.#tryAgain(this.moves[this.moves.length - 1].coordinate)
           : this.#tryAgain(this.search.coordinate);
@@ -129,16 +102,23 @@ export default class Computer extends Player {
     }
   }
 
-  #getRandCoordinate() {
-    let coordinate = false;
-    while (!coordinate) {
-      const keys = Object.keys(this.opponentGameboard.board);
-      const randKey = Math.floor(keys.length * Math.random());
-      const randomCoordinate = keys[randKey];
-      if (!this.opponentGameboard.board[keys[randKey]].attacked) {
-        coordinate = randomCoordinate;
-      }
-    }
-    return coordinate;
+  #newSearch(searching = false, coordinate = null) {
+    this.search = { searching, coordinate };
+  }
+
+  #setNextSearchDirection() {
+    const searchDirections = ['above', 'below', 'left', 'right'];
+    const currentIndex = searchDirections.indexOf(this.search.searching);
+    const newIndex = currentIndex + 1;
+    this.search.searching = searchDirections[newIndex];
+  }
+
+  #checkOtherShips() {
+    const keys = Object.keys(this.opponentGameboard.board);
+    return keys.find(
+      (key) => this.opponentGameboard.board[key].attacked
+        && this.opponentGameboard.board[key].shipPlaced
+        && !this.opponentGameboard.board[key].shipPlaced.sunk,
+    );
   }
 }

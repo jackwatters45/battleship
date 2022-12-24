@@ -9,14 +9,19 @@ import isSunk from './dom/isSunk';
 import addSymbol from './dom/addSymbol';
 import gameOver from './dom/gameOver';
 import toggleOrientation from './dom/toggleOrientation';
+import { dragStart, drop } from './dom/dragShips';
 
 // eslint-disable-next-line no-unused-expressions
 ('use strict');
 
 const leftBoard = document.querySelector('.left-board');
 const rightBoard = document.querySelector('.right-board');
-
+const ships = document.querySelectorAll('.ship');
 const newGame = document.querySelector('.restart');
+newGame.addEventListener('click', () => gameLoop());
+const orientationButton = document.querySelector('.orientation');
+orientationButton.addEventListener('click', toggleOrientation);
+const shipContainer = document.querySelector('.ships-container');
 
 const gameLoop = () => {
   // clear the board before a new game
@@ -32,21 +37,12 @@ const gameLoop = () => {
   displayEmptyGameboard(player.gameBoard, leftBoard);
   displayEmptyGameboard(cpu.gameBoard, rightBoard);
 
-  // randomly place ships
-  player.gameBoard.placeRandShips();
+  // randomly place cpu ships
   cpu.gameBoard.placeRandShips();
 
-  // display ships
-  displayShips(player.gameBoard.shipsPlaced, leftBoard);
-  displayShips(cpu.gameBoard.shipsPlaced, rightBoard);
-
-  // add listeners to allow user to attack
-  addAttackListeners(player, cpu);
+  // add listener to placeship
+  placeShips(player, cpu);
 };
-
-newGame.addEventListener('click', () => {
-  gameLoop();
-});
 
 const addAttackListeners = (player, cpu) => {
   const rightBoxes = document.querySelectorAll('.right-board-box');
@@ -56,9 +52,6 @@ const addAttackListeners = (player, cpu) => {
     }
   }));
 };
-
-const orientationButton = document.querySelector('.orientation');
-orientationButton.addEventListener('click', toggleOrientation);
 
 const cpuAttack = (cpu) => {
   const attackResults = cpu.randomAttack();
@@ -84,6 +77,31 @@ const userAttack = (box, player) => {
     return true;
   }
   return false;
+};
+
+const placeShips = (player, cpu) => {
+  const placeableBoxes = document.querySelectorAll('.left-board-box');
+  ships.forEach((ship) => ship.addEventListener('dragstart', dragStart));
+  placeableBoxes.forEach((box) => {
+    box.addEventListener('dragover', (e) => e.preventDefault());
+    box.addEventListener('dragenter', (e) => e.preventDefault());
+    box.addEventListener('drop', (e) => {
+      const ship = drop(e);
+      if (ship) {
+        player.gameBoard.userPlaceShip(
+          ship.start,
+          ship.isHorizontal,
+          ship.length,
+          ship.name,
+        );
+        displayShips(player.gameBoard.shipsPlaced, leftBoard);
+      }
+      if (player.gameBoard.shipsPlaced.length === 5) {
+        shipContainer.classList.add('hidden');
+        addAttackListeners(player, cpu);
+      }
+    });
+  });
 };
 
 gameLoop();

@@ -6,17 +6,17 @@ export default class Gameboard {
   constructor() {
     this.board = this.#createGameboard();
     this.shipsPlaced = [];
-    this._shipsToBePlaced = [
+  }
+
+  placeRandShips() {
+    const shipsToBePlaced = [
       { name: 'Carrier', length: 5 },
       { name: 'Battleship', length: 4 },
       { name: 'Cruiser', length: 3 },
       { name: 'Submarine', length: 3 },
       { name: 'Destroyer', length: 2 },
     ];
-  }
-
-  placeRandShips() {
-    this._shipsToBePlaced.forEach((ship) => {
+    shipsToBePlaced.forEach((ship) => {
       let isValidShip = false;
       let coordinates;
 
@@ -40,10 +40,10 @@ export default class Gameboard {
     this._shipsToBePlaced = null;
   }
 
-  userPlaceShip(start, orientation, ship) {
+  userPlaceShip(start, orientation, length, name) {
     this.#placeShip(
-      this.#getOtherCoordinates(start, orientation, ship.length),
-      ship.name,
+      this.#getOtherCoordinates(start, orientation, length),
+      name,
     );
   }
 

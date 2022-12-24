@@ -1,6 +1,6 @@
 # battleship
 
-- Drag n drop to place ships
+- figure out how to order everything
 - clean everything up
 
 Eventual AI Capabilities

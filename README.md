@@ -15,6 +15,8 @@ A battleship game where the user can play against a computer. Style inspired by 
 ```zsh
 git clone https://github.com/jackwatters45/battleship.git
 
+npm install
+
 npm run start
 ```
 
